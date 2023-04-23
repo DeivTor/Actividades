@@ -95,19 +95,19 @@ INSERT INTO inventario (idProducto, cantidad)
 
 INSERT INTO cliente (cedulaCliente, nombre, apellido, telefono)
 	VALUES	(12345, 'Andres', 'Arias', 937254019),
-			(45324, 'Julian', 'Cruz', 233456234),
-            (12455, 'Juan', 'Veloza', 238326234);
+		(45324, 'Julian', 'Cruz', 233456234),
+            	(12455, 'Juan', 'Veloza', 238326234);
 
             
 INSERT INTO vendedor (cedulaVendedor, nombre, apellido, telefono)
 	VALUES	(18634, 'Sebastian', 'Arevalo', 456875234),
-            (56234, 'Didier', 'Fandiño', 444576345),
-			(34545, 'Isabel', 'Hurtado', 344563234);
+            	(56234, 'Didier', 'Fandiño', 444576345),
+		(34545, 'Isabel', 'Hurtado', 344563234);
             
 INSERT INTO factura (idCliente, idProducto, idVendedor, cantidad, fechaVenta)
 	VALUES	(12345, 3, 18634, 1, now()),
-			(45324, 7, 56234, 5, now()),
-            (12455, 1, 34545, 3, now());
+		(45324, 7, 56234, 5, now()),
+            	(12455, 1, 34545, 3, now());
             
 DELIMITER //
 
@@ -120,26 +120,23 @@ BEGIN
     DECLARE r_apellido VARCHAR (45);
     DECLARE r_numeroFactura INT;
     
-    DECLARE cliBonus
-		CURSOR FOR SELECT cedulaCliente, nombre, apellido, numeroFacturas
+    	DECLARE cliBonus CURSOR FOR SELECT cedulaCliente, nombre, apellido, numeroFacturas
 					FROM (SELECT cl.cedulaCliente, cl.nombre, cl.apellido, count(fa.idCliente) AS numeroFacturas FROM cliente cl, factura fa WHERE cl.cedulaCliente = fa.idCliente group by 1) AS NumeroFacturas
-                    WHERE numeroFacturas > 2;
+                    			WHERE numeroFacturas > 2;
             
-	DECLARE CONTINUE HANDLER 
-		FOR NOT FOUND SET fin = 1;
+	DECLARE CONTINUE HANDLER FOR NOT FOUND SET fin = 1;
         
 	OPEN cliBonus;
 	calcularBonus: LOOP
 		FETCH cliBonus INTO r_cedula, r_nombre, r_apellido, r_numeroFactura;
-        
         IF final = 1 THEN
-			LEAVE calcularBonus;
-		END IF;
+		LEAVE calcularBonus;
+	END IF;
         
         INSERT INTO bonus (idCliente, nombre, apellido, numeroFacturas, descripcion) 
-			VALUES (r_cedula, r_nombre, r_apellido, r_numeroFactura, "Adquirio un bono del 50% por más de 2 compras");
+		VALUES (r_cedula, r_nombre, r_apellido, r_numeroFactura, "Adquirio un bono del 50% por más de 2 compras");
         
-    END LOOP; 
+    	END LOOP; 
 	CLOSE cliBonus;	
 END
 //
