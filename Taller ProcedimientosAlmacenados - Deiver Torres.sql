@@ -76,7 +76,7 @@ DELIMITER ;
 	existen en esa categoría. */
 
 DELIMITER %%
-CREATE PROCEDURE preciosProductos (IN tipo VARCHAR(20), OUT maxPrecio INT, OUT minPrecio INT, OUT mediaPr INT)
+CREATE PROCEDURE preciosProductos (IN tipo VARCHAR(20), OUT maxPrecio INT, OUT minPrecio INT, OUT mediaPrecio INT)
 BEGIN
 	SELECT max(precio) FROM productos WHERE tipoProducto = tipo INTO maxPrecio;
 	SELECT min(precio) FROM productos WHERE tipoProducto = tipo INTO minPrecio;
